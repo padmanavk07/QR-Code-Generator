@@ -7,7 +7,46 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+
+    <div class="app-container">
+        <!-- Header Section -->
+        <header class="app-header">
+            <h1>QR Code Generator</h1>
+            <p>Generate instant QR codes for text, URLs, and more.</p>
+        </header>
+
+        <main class="app-main">
+
+            <section class="input-section">
+                <form id="qr-form" onsubmit="event.preventDefault();">
+                    <div class="form-group">
+                        <label for="qr-input">Enter Text or URL</label>
+                        <input 
+                            type="text" 
+                            id="qr-input" 
+                            placeholder="Type something here..." 
+                            required
+                        >
+                    </div>
+                    <button type="submit" id="generate-btn">Generate QR Code</button>
+                </form>
+            </section>
+
+            <!-- QR Code Display Area -->
+            <section class="display-section">
+                <div id="qrcode-container">
+                    <!-- QR code image/canvas will be injected here by the library later -->
+                    <div class="placeholder-text">Your QR Code will appear here</div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer Section -->
+        <footer class="app-footer">
+            <p>&copy; Padmanav Khamari. All rights reserved.</p>
+        </footer>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
