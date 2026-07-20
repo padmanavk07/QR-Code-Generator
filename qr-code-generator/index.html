@@ -34,9 +34,12 @@
 
             <!-- QR Code Display Area -->
             <section class="display-section">
-                <div id="qrcode-container">
-                    <!-- QR code image/canvas will be injected here by the library later -->
-                    <div class="placeholder-text">Your QR Code will appear here</div>
+                <div class="display-wrap">
+                    <div id="qrcode-container">
+                        <div class="placeholder-text">Your QR Code will appear here</div>
+                    </div>
+                    <!-- Hidden by default until a QR code is active -->
+                    <button type="button" id="download-btn" class="hidden">Download PNG</button>
                 </div>
             </section>
         </main>
