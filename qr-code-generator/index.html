@@ -9,24 +9,28 @@
 <body>
 
     <div class="app-container">
-        <!-- Header Section -->
         <header class="app-header">
             <h1>QR Code Generator</h1>
             <p>Generate instant QR codes for text, URLs, and more.</p>
         </header>
 
         <main class="app-main">
-
             <section class="input-section">
+                <div class="mode-tabs">
+                    <button type="button" class="tab-btn active" data-mode="text">Text</button>
+                    <button type="button" class="tab-btn" data-mode="url">URL</button>
+                </div>
+
                 <form id="qr-form" onsubmit="event.preventDefault();">
                     <div class="form-group">
-                        <label for="qr-input">Enter Text or URL</label>
+                        <label id="input-label" for="qr-input">Enter Text</label>
                         <input 
                             type="text" 
                             id="qr-input" 
                             placeholder="Type something here..." 
                             required
                         >
+                        <span id="error-message" class="error-text hidden"></span>
                     </div>
                     <button type="submit" id="generate-btn">Generate QR Code</button>
                 </form>
@@ -38,13 +42,11 @@
                     <div id="qrcode-container">
                         <div class="placeholder-text">Your QR Code will appear here</div>
                     </div>
-                    <!-- Hidden by default until a QR code is active -->
                     <button type="button" id="download-btn" class="hidden">Download PNG</button>
                 </div>
             </section>
         </main>
 
-        <!-- Footer Section -->
         <footer class="app-footer">
             <p>&copy; Padmanav Khamari. All rights reserved.</p>
         </footer>
