@@ -16,22 +16,56 @@
 
         <main class="app-main">
             <section class="input-section">
+
                 <div class="mode-tabs">
                     <button type="button" class="tab-btn active" data-mode="text">Text</button>
                     <button type="button" class="tab-btn" data-mode="url">URL</button>
+                    <button type="button" class="tab-btn" data-mode="wifi">Wi-Fi</button>
                 </div>
 
                 <form id="qr-form" onsubmit="event.preventDefault();">
-                    <div class="form-group">
+
+                    <div id="standard-input-group" class="form-group">
                         <label id="input-label" for="qr-input">Enter Text</label>
                         <input 
                             type="text" 
                             id="qr-input" 
                             placeholder="Type something here..." 
-                            required
                         >
-                        <span id="error-message" class="error-text hidden"></span>
                     </div>
+
+                    <div id="wifi-input-group" class="hidden">
+                        <div class="form-group">
+                            <label for="wifi-ssid">Network SSID (Name)</label>
+                            <input type="text" id="wifi-ssid" placeholder="e.g. Home_WiFi">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="wifi-password">Password</label>
+                            <input type="password" id="wifi-password" placeholder="Enter network password">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="wifi-encryption">Encryption Type</label>
+                            <select id="wifi-encryption">
+                                <option value="WPA">WPA / WPA2 / WPA3</option>
+                                <option value="WEP">WEP</option>
+                                <option value="nopass">None (Open Network)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <label for="wifi-hidden">
+                                <input type="checkbox" id="wifi-hidden">
+                                Hidden Network
+                            </label>
+                        </div>
+                    </div>
+                    
+
+                    <!-- Universal Error Message Container -->
+                    <span id="error-message" class="error-text hidden"></span>
+
                     <button type="submit" id="generate-btn">Generate QR Code</button>
                 </form>
             </section>

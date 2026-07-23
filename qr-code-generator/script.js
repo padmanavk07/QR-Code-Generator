@@ -1,5 +1,13 @@
 const qrForm = document.getElementById('qr-form');
 const qrInput = document.getElementById('qr-input');
+const standardInputGroup = document.getElementById('standard-input-group');
+const wifiInputGroup = document.getElementById('wifi-input-group');
+
+const wifiSSID = document.getElementById('wifi-ssid');
+const wifiPassword = document.getElementById('wifi-password');
+const wifiEncryption = document.getElementById('wifi-encryption');
+const wifiHidden = document.getElementById('wifi-hidden');
+
 const qrcodeContainer = document.getElementById('qrcode-container');
 const downloadBtn = document.getElementById('download-btn');
 const tabButtons = document.querySelectorAll('.tab-btn');
@@ -7,8 +15,7 @@ const inputLabel = document.getElementById('input-label');
 const errorMessage = document.getElementById('error-message');
 
 let qrCodeInstance = null;
-let currentMode = 'text'; // Can be 'text' or 'url'
-
+let currentMode = 'text'; // 'text', 'url', or 'wifi'
 
 function isValidURL(string) {
     try {
@@ -24,16 +31,17 @@ function isValidURL(string) {
     }
 }
 
-function clearErrorState() {
+function clearError() {
     errorMessage.classList.add('hidden');
     errorMessage.textContent = '';
     qrInput.classList.remove('invalid-input');
+    wifiSSID.classList.remove('invalid-input');
 }
 
-function showErrorState(message) {
+function showError(message, inputElement = qrInput) {
     errorMessage.textContent = message;
     errorMessage.classList.remove('hidden');
-    qrInput.classList.add('invalid-input');
+    inputElement.classList.add('invalid-input');
 }
 
 function generateQRCode(inputValue) {
@@ -56,44 +64,68 @@ function generateQRCode(inputValue) {
     }, 50);
 }
 
+// Mode Tab Selection Logic
 tabButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-
         tabButtons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         
         currentMode = btn.getAttribute('data-mode');
-        clearErrorState();
+        clearError();
 
-        if (currentMode === 'url') {
-            inputLabel.textContent = "Enter URL";
-            qrInput.placeholder = "https://example.com";
+        if (currentMode === 'wifi') {
+            standardInputGroup.classList.add('hidden');
+            wifiInputGroup.classList.remove('hidden');
         } else {
-            inputLabel.textContent = "Enter Text";
-            qrInput.placeholder = "Type something here...";
+            wifiInputGroup.classList.add('hidden');
+            standardInputGroup.classList.remove('hidden');
+
+            if (currentMode === 'url') {
+                inputLabel.textContent = "Enter URL";
+                qrInput.placeholder = "https://example.com";
+            } else {
+                inputLabel.textContent = "Enter Text";
+                qrInput.placeholder = "Type something here...";
+            }
         }
     });
 });
 
 qrForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    clearErrorState();
-    
-    const inputValue = qrInput.value.trim();
+    clearError();
 
-    if (!inputValue) {
-        showErrorState("Input cannot be blank.");
-        return;
-    }
+    let finalDataString = '';
 
-    if (currentMode === 'url') {
-        if (!isValidURL(inputValue)) {
-            showErrorState("Please enter a valid URL layout configuration format.");
+    if (currentMode === 'wifi') {
+        const ssid = wifiSSID.value.trim();
+        const password = wifiPassword.value;
+        const encryption = wifiEncryption.value;
+        const isHidden = wifiHidden.checked;
+
+        if (!ssid) {
+            showError("Please enter network SSID (Name).", wifiSSID);
             return;
         }
+
+        finalDataString = `WIFI:S:${ssid};T:${encryption};P:${password};H:${isHidden};;`;
+    } else {
+        const inputValue = qrInput.value.trim();
+
+        if (!inputValue) {
+            showError("Input cannot be blank.", qrInput);
+            return;
+        }
+
+        if (currentMode === 'url' && !isValidURL(inputValue)) {
+            showError("Please enter a valid URL layout configuration format.", qrInput);
+            return;
+        }
+
+        finalDataString = inputValue;
     }
 
-    generateQRCode(inputValue);
+    generateQRCode(finalDataString);
 });
 
 downloadBtn.addEventListener('click', downloadQRCodeImage);
